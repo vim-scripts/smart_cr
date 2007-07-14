@@ -1,0 +1,35 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1956
+
+Deprecated, use vimscript#1957
+
+Example
+-------
+Perhaps you editing C file:
+  #include <stdlib.h*>
+(* - cursor position)
+If you hit Enter, new include directive will be inserted:
+  #include <stdlib.h>
+  #include <*>
+
+Configuration
+-------------
+You must create new hash g:smart_cr
+  let g:smart_cr = {}
+Hash must contain arrays for different filetypes:
+  let g:smart_cr.c = [['^#include <', '^>$', "#include \<@@@>"],
+                     \['^#include "', '^"$', "#include \"@@@\""]]
+When you hit Enter, line is divided on two parts - before and above
+the cursor. First two strings are regular expressions for left and
+right parts of line. If they matched, third string will be inserted in
+new line.
+"@@@" is marker where to place cursor. You may redefine it by setting
+global variable:
+  let g:smart_cr_marker = '<here>'
+
+Another example
+---------------
+This for Embedded ruby:
+  let g:smart_cr.eruby = [['<%[^=]', '^\s*%>',  "<% @@@ %>"],
+                         \['<%[^=]', '^\s*-%>', "<% @@@ -%>"],
+                         \['<%=',    '^\s*%>',  "<%= @@@ %>"],
+                         \['<%=',    '^\s*-%>', "<%= @@@ -%>"]]
